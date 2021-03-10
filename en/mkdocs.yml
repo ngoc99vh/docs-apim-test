@@ -1,0 +1,140 @@
+# Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# WSO2 Inc. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+# Project information
+site_name: Tài liệu hướng dẫn tích hợp - BioId 2.0.1
+site_description: Documentation for BioId
+site_author: WSO2
+site_url: https://scm.devops.vnpt.vn/it.si.ekyc_bank/vnpt-bioid-integration-docs
+
+# Repository
+repo_name: VNPT-BIOID-INTEGRATION-DOCS
+repo_url: https://scm.devops.vnpt.vn/it.si.ekyc_bank/vnpt-bioid-integration-docs
+edit_uri: https://scm.devops.vnpt.vn/it.si.ekyc_bank/vnpt-bioid-integration-docs/edit/develop/en
+dev_addr: localhost:8000
+
+# Copyright
+copyright: BioId - Documentation
+
+# Configuration
+theme:
+  name: material
+  custom_dir: theme/material
+  palette:
+    primary: deep-orange
+    accent: deep-orange
+  logo: images/lolo.png
+  favicon: images/lolo.png
+  highlightjs: true
+  feature:
+    tabs: true
+  language: 'en'
+#Breaks build if there's a warning
+strict: true
+# Navigation
+nav:
+  - Trang chủ: index.md
+  - Tổng quan:
+      - Giới thiệu chung: overview/GTC.md
+      - Thông tin phiên bản: overview/versions1.md
+  - Hướng dẫn tích hợp:
+      - Mô hình tích hợp: instructions-for-integration/integrated-model.md
+      - Hướng dẫn tích hợp: instructions-for-integration/instructions-for-integration.md
+      - Thông số kỹ thuật:
+          - Yêu cầu dữ liệu đầu vào: instructions-for-integration/specification/required-data-input.md
+          - Thông số kỹ thuật hệ thống: instructions-for-integration/specification/system-specifications.md
+      - Tài liệu SDK Java:
+          - SDK Quản lý Files:
+                - Danh sách các phương thức: instructions-for-integration/documention-SDK/java/file-management/list-method.md
+                - Upload 1 file lên server: instructions-for-integration/documention-SDK/java/file-management/publicExecuteUpload.md
+                - Lấy thông tin file từ server: instructions-for-integration/documention-SDK/java/file-management/publicFindDownloadDetailByUuid.md
+                - Download fie từ server: instructions-for-integration/documention-SDK/java/file-management/publicFindDownloadByUuid.md
+                - Xoá 1 file trên server: instructions-for-integration/documention-SDK/java/file-management/publicDeleteDeleteByUuid.md
+          - Danh sách model:
+                - FileDetail: instructions-for-integration/documention-SDK/java/list-model/FileDetail.md
+      - Tài liệu SDK .Net: instructions-for-integration/documention-SDK/net/net.md
+      - Tài liệu SDK iOS: instructions-for-integration/documention-SDK/ios/ios.md
+      - Tài liệu SDK Android: instructions-for-integration/documention-SDK/android/android.md
+      - Tài liệu API:
+          - Authentication: instructions-for-integration/documention-API/authentication.md
+          - Quản lý định danh: instructions-for-integration/documention-API/identity-management.md
+          - Sinh trắc học khuôn mặt:
+              - Giới thiệu: instructions-for-integration/documention-API/face-biometrics/face-biometrics.md
+          - Ocr: instructions-for-integration/documention-API/ocr.md
+          - Quản lý file: instructions-for-integration/documention-API/file-management/file-management.md
+      - Error Code:  instructions-for-integration/error-code.md
+  - Tải về:
+      - Tải về: document/docs.md
+  - Câu hỏi thường gặp:
+      - Câu hỏi thường gặp: frequently-asked-questions/frequently-asked-questions.md
+    
+# Extensions
+markdown_extensions:
+  - markdown.extensions.admonition
+  - markdown.extensions.codehilite:
+      linenums: true
+      use_pygments: false
+  - markdown.extensions.def_list
+  - markdown.extensions.footnotes
+  - markdown.extensions.meta
+  - markdown.extensions.toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+plugins:
+  - search
+  - markdownextradata: {}
+  - exclude:
+      glob:
+        - wip/*
+  # Extra
+extra_css:
+  - assets/lib/highlightjs/default.min.css
+  - assets/css/theme.css
+  - assets/lib/json-formatter/json-formatter.css
+extra_javascript:
+  - assets/lib/json-formatter/json-formatter.umd.js
+  - assets/lib/highlightjs/highlight.min.js
+  - assets/js/theme.js
+  - assets/lib/backtotop/js/util.js
+  - assets/lib/backtotop/js/main.js
+extra:
+  social:
+    - type: github
+      link: https://github.com/wso2
+    - type: twitter
+      link: https://twitter.com/wso2
+    - type: linkedin
+      link: https://www.linkedin.com/company/wso2
+  site_version: 2.1.0
+  base_path: http://localhost:8000
+
+
+

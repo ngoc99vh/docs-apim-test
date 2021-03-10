@@ -1,0 +1,145 @@
+---
+swagger: "2.0"
+info:
+  description: "Cuộc cách mạng trong Xác thực và Định danh bằng Công nghệ sinh trắc học trên nền tảng"
+  version: "1.1"
+  title: "Hệ thống xác thực, định danh sinh trắc học VNPT BioID"
+host: "gw-bioid.vnpt.vn"
+basePath: "/{api_context}"
+tags:
+  -
+    name: "Quản lý file"
+    description: "Quản lý file trên hệ thống"
+schemes:
+  - "https"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths:
+  /delete/{uuid}:
+    delete:
+      tags:
+        - "Quản lý file"
+      summary: "Xóa file trên server"
+      operationId: "PublicDeleteDeleteByUuid"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: "uuid"
+          in: "path"
+          description: "Id của file cần xóa"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Thao tác thành công"
+          schema:
+            $ref: "#/definitions/FileDetail"
+      x-auth-type: "Application & Application User"
+      x-throttling-tier: "Unlimited"
+      x-wso2-application-security:
+        security-types:
+          - "oauth2"
+        optional: false
+  /download/{uuid}:
+    get:
+      tags:
+        - "Quản lý file"
+      summary: "Download file từ server"
+      operationId: "PublicFindDownloadByUuid"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: "uuid"
+          in: "path"
+          description: "Id của file cần download"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Thao tác thành công"
+      x-auth-type: "Application & Application User"
+      x-throttling-tier: "Unlimited"
+      x-wso2-application-security:
+        security-types:
+          - "oauth2"
+        optional: false
+  /download/detail/{uuid}:
+    get:
+      tags:
+        - "Quản lý file"
+      summary: "Lấy thông tin file từ server"
+      operationId: "PublicFindDownloadDetailByUuid"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: "uuid"
+          in: "path"
+          description: "Id của file cần lấy thông tin"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "Thao tác thành công"
+          schema:
+            $ref: "#/definitions/FileDetail"
+      x-auth-type: "Application & Application User"
+      x-throttling-tier: "Unlimited"
+      x-wso2-application-security:
+        security-types:
+          - "oauth2"
+        optional: false
+  /upload:
+    post:
+      tags:
+        - "Quản lý file"
+      summary: "Tải file lên server"
+      operationId: "PublicExecuteUpload"
+      consumes:
+        - "multipart/form-data"
+      produces:
+        - "application/json"
+      parameters:
+        -
+          name: "file"
+          in: "formData"
+          description: "Ảnh upload lên server"
+          required: true
+          type: "file"
+      responses:
+        200:
+          description: "Thao tác thành công"
+          schema:
+            $ref: "#/definitions/FileDetail"
+      x-auth-type: "Application & Application User"
+      x-throttling-tier: "Unlimited"
+      x-wso2-application-security:
+        security-types:
+          - "oauth2"
+        optional: false
+definitions:
+  FileDetail:
+    type: "object"
+    required:
+      - "url"
+      - "uuid"
+    properties:
+      fileName:
+        type: "string"
+        description: "Tên của file"
+      uuid:
+        type: "string"
+        description: "ID cùa file trên hệ thống"
+      url:
+        type: "string"
+        description: "Đường dẫn tải file"

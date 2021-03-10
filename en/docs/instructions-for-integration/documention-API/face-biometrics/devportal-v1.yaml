@@ -1,0 +1,603 @@
+openapi: 3.0.1
+info:
+  title: VNPT EKYC PLATFORM
+  description: Sản phẩm của VNPT-IT
+  version: "1.0"
+servers:
+  - url: https://localhost:44305/v1
+paths:
+  /identifications/faces/url:
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: Xác thực định danh khuôn mặt qua đường dẫn ảnh
+      operationId: PublicExecuteIdentificationsFacesUrl
+      parameters:
+        - name: $limit
+          in: query
+          description: Số lượng bản ghi trả về
+          schema:
+            type: integer
+        - name: matching
+          in: query
+          description: Tỉ lệ phần trăm chính xác nhỏ nhất từ 0-1(Tương ứng 1-100%)
+          schema:
+            type: number
+      requestBody:
+        description: ' Thông tin xác minh khuôn mặt'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaceImageUrl'
+        required: false
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityResponse'
+      security:
+        - key: []
+      x-codegen-request-body-name: FaceImageUrl
+  /identifications/faces:
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: Xác thực định danh khuôn mặt qua tệp ảnh
+      operationId: PublicExecuteIdentificationsFaces
+      parameters:
+        - name: $limit
+          in: query
+          description: Số lượng bản ghi trả về
+          schema:
+            type: integer
+        - name: matching
+          in: query
+          description: Tỉ lệ phần trăm chính xác nhỏ nhất từ 0-1(Tương ứng 1-100%)
+          schema:
+            type: number
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  description: ' Ảnh khuôn mặt cần định danh'
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityResponse'
+      security:
+        - key: []
+  /compare/faces/url:
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: So sánh khuôn mặt qua đường dẫn ảnh
+      operationId: PublicExecuteCompareFacesUrl
+      requestBody:
+        description: ' Thông tin 2 ảnh cần so sánh'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompareParams'
+        required: false
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+      security:
+        - key: []
+      x-codegen-request-body-name: CompareParams
+  /liveness/check:
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: Kiểm tra liveness
+      operationId: PublicExecuteLivenessCheck
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - faceImage
+              properties:
+                faceImage:
+                  type: string
+                  description: ' Ảnh khuôn mặt thực hiện kiểm tra'
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+      security:
+        - key: []
+  /enrollments/{person_id}/faces/url:
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: Đăng ký khuôn mặt thông qua đường dẫn ảnh
+      operationId: PublicCreateEnrollmentsFacesUrl
+      parameters:
+        - name: person_id
+          in: path
+          description: ID của người được đăng ký
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: ' Thông tin đăng ký dữ liệu khuôn mặt'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaceImageUrl'
+        required: false
+      responses:
+        201:
+          description: Khởi tạo thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollResponse'
+      security:
+        - key: []
+      x-codegen-request-body-name: FaceImageUrl
+  /verifications/{person_id}/faces/url:
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: Xác minh khuôn mặt qua đường dẫn ảnh
+      operationId: PublicExecuteVerificationsFacesUrl
+      parameters:
+        - name: person_id
+          in: path
+          description: ID của người được đăng ký
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: ' Thông tin xác minh khuôn mặtt'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaceImageUrl'
+        required: false
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+      security:
+        - key: []
+      x-codegen-request-body-name: FaceImageUrl
+  /enrollments/{enroll_id}:
+    get:
+      tags:
+        - VNPT Biometrics API
+      summary: Lấy chi tiết thông tin đăng ký
+      operationId: PublicFindEnrollmentsByEnrollId
+      parameters:
+        - name: enroll_id
+          in: path
+          description: ID enroll trên hệ thống
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaceEnrollment'
+      security:
+        - key: []
+    delete:
+      tags:
+        - VNPT Biometrics API
+      summary: Xóa enroll theo enrollID
+      operationId: PublicDeleteEnrollmentsByEnrollId
+      parameters:
+        - name: enroll_id
+          in: path
+          description: ID enroll trên hệ thống
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+      security:
+        - key: []
+  /enrollments/{person_id}/faces:
+    get:
+      tags:
+        - VNPT Biometrics API
+      summary: Lấy tất cả các khuôn mặt đã đăng ký của 01 người
+      operationId: PublicFindEnrollmentsFacesByPersonId
+      parameters:
+        - name: person_id
+          in: path
+          description: ID định danh người dùng
+          required: true
+          schema:
+            type: string
+        - name: $filter
+          in: query
+          description: lọc theo thông tin tuỳ chọn(Theo cấu trúc RSQL. Equal
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: giới hạn số bản ghi
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          description: vị trí bản ghi bắt đầu
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnrolledFace'
+      security:
+        - key: []
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: Đăng ký khuôn mặt thông qua ảnh
+      operationId: PublicCreateEnrollmentsFaces
+      parameters:
+        - name: person_id
+          in: path
+          description: ID của người được đăng ký
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  description: ' Thông tin đăng ký dữ liệu khuôn mặt'
+                  format: binary
+        required: true
+      responses:
+        201:
+          description: Khởi tạo thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollResponse'
+      security:
+        - key: []
+    delete:
+      tags:
+        - VNPT Biometrics API
+      summary: Xóa tất cả face enroll của PersonID
+      operationId: PublicDeleteEnrollmentsFacesByPersonId
+      parameters:
+        - name: person_id
+          in: path
+          description: ID định danh KH
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+      security:
+        - key: []
+  /verifications/{person_id}/faces:
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: Xác minh khuôn mặt qua tệp ảnh
+      operationId: PublicExecuteVerificationsFaces
+      parameters:
+        - name: person_id
+          in: path
+          description: ID của người được đăng ký
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  description: ' Ảnh khuôn mặt cần xác minh'
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+      security:
+        - key: []
+  /compare/faces:
+    post:
+      tags:
+        - VNPT Biometrics API
+      summary: So sánh khuôn mặt qua file ảnh
+      operationId: PublicExecuteCompareFaces
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - file1
+                - file2
+              properties:
+                file1:
+                  type: string
+                  description: ' Ảnh khuôn mặt thứ 1 cần so sánh'
+                  format: binary
+                file2:
+                  type: string
+                  description: ' Ảnh khuôn mặt thứ 2 cần so sánh'
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: Thao tác thành công
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+      security:
+        - key: []
+components:
+  schemas:
+    EnrolledFace:
+      required:
+        - createdAt
+        - enrollID
+        - url
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Thời gian enroll lên hệ thống
+        enrollID:
+          type: string
+          description: ID của enrollment trên hệ thống
+        url:
+          type: string
+          description: Đường dẫn ảnh đã đăng ký
+    LivenessResponse:
+      required:
+        - confidence
+        - result
+        - status
+      type: object
+      properties:
+        result:
+          type: string
+          description: Kết quả đánh giá REAL/FAKE
+        confidence:
+          type: number
+          description: Tỉ lệ chính xác
+          format: float
+        message:
+          type: string
+          description: Mô tả kết quả thực hiện
+        status:
+          type: string
+          description: Trạng thái thực hiện
+    EnrollResponse:
+      required:
+        - enrollID
+        - message
+        - status
+        - timeEnroll
+      type: object
+      properties:
+        timeEnroll:
+          type: string
+          description: Thời gian thực hiện enroll(giờ hệ thống)
+        enrollID:
+          type: string
+          description: ID của enrollment
+        message:
+          type: string
+          description: Tin nhắn trả về
+        status:
+          type: string
+          description: 'Mã status trả về '
+        statusCode:
+          type: string
+          description: Mô tả mã status trả về
+    MatchedPerson:
+      required:
+        - codeFace
+        - faceId
+        - iD
+        - matching
+      type: object
+      properties:
+        codeFace:
+          type: string
+          description: Các thuộc tính của đối tượng trên hệ thống
+        faceId:
+          type: number
+          description: Các thuộc tính của đối tượng trên hệ thống
+          format: int32
+        iD:
+          type: number
+          description: ID định danh đối tượng trên hệ thống biometrics
+          format: int32
+        matching:
+          type: number
+          description: Tỉ lệ khớp khuôn mặt
+          format: float
+    VerifyResponse:
+      required:
+        - matching
+        - message
+        - status
+      type: object
+      properties:
+        message:
+          type: string
+          description: Tin nhắn trả về
+        matching:
+          type: number
+          description: Tỉ lệ khớp khuôn mặt
+          format: float
+        status:
+          type: string
+          description: 'Mã status trả về '
+        statusCode:
+          type: string
+          description: Mô tả mã status trả về
+    DeleteResponse:
+      required:
+        - message
+        - status
+      type: object
+      properties:
+        message:
+          type: string
+          description: Tin nhắn trả về
+        status:
+          type: string
+          description: 'Mã status trả về '
+        statusCode:
+          type: string
+          description: Mô tả mã status trả về
+    FaceEnrollment:
+      required:
+        - fileUrl
+        - iD
+        - personID
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Thời gian thực hiện đăng ký
+        fileUrl:
+          type: string
+          description: 'Mã status trả về '
+        personID:
+          type: number
+          description: Lớp thông tin enroll theo EnrollID
+          format: int32
+        iD:
+          type: number
+          description: ID của enrollment
+          format: int32
+    IdentityResponse:
+      required:
+        - message
+        - persons
+        - status
+      type: object
+      properties:
+        persons:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchedPerson'
+        message:
+          type: string
+          description: Tin nhắn trả về
+        status:
+          type: string
+          description: 'Mã status trả về '
+        statusCode:
+          type: string
+          description: Mô tả mã status trả về
+    CompareParams:
+      required:
+        - fileUrl1
+        - fileUrl2
+      type: object
+      properties:
+        fileUrl2:
+          type: string
+          description: Đường dẫn Ảnh khuôn mặt thứ hai
+        fileUrl1:
+          type: string
+          description: Đường dẫn Ảnh khuôn mặt thứ nhất
+    FaceImage:
+      required:
+        - file
+      type: object
+      properties:
+        file:
+          type: string
+          description: Ảnh khuôn mặt
+          format: binary
+    PersonAttribute:
+      required:
+        - attributeId
+        - attributeName
+        - attributeValue
+      type: object
+      properties:
+        attributeId:
+          type: number
+          description: ID thuộc tính
+          format: int32
+        attributeValue:
+          type: string
+          description: Giá trị của thuộc tính
+        attributeName:
+          type: string
+          description: 'Tên thuộc tính: name, age,….'
+    FaceImageUrl:
+      required:
+        - fileUrl
+      type: object
+      properties:
+        fileUrl:
+          type: string
+          description: Đường dẫn Ảnh khuôn mặt
+  securitySchemes:
+    key:
+      type: apiKey
+      name: Authorization
+      in: header
